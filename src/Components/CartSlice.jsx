@@ -1,57 +1,50 @@
 import { createSlice } from "@reduxjs/toolkit";
-
+const initialState = {
+  cartItems: [],
+};
 const CartSlice = createSlice({
   name: "cart",
-  initialState: InitialState,
+  initialState,
   reducers: {
-    addToCart: (state, action) => {
+    addItemToCart(state, action) {
       const existingItem = state.cartItems.find(
         (item) => item.id === action.payload.id
       );
       if (existingItem) {
         existingItem.quantity += 1;
       } else {
-        state.cartItems.push({
-          ...action.payload,
-          quantity: action.payload.quantity,
-        });
+        state.cartItems.push({ ...action.payload, quantity: 1 });
       }
-      state.cartItems.push(action.payload);
     },
-    removeFromCart: (state, action) => {
+    removeItemFromCart(state, action) {
       state.cartItems = state.cartItems.filter(
         (item) => item.id !== action.payload
       );
     },
-    clearCart: (state) => {
+    clearCart(state) {
       state.cartItems = [];
     },
-    increaseItemQuantity: (state, action) => {
-      const existingItem = state.cartItems.find(
+    increaseItemQuantity(state, action) {
+      const itemToIncrease = state.cartItems.find(
         (item) => item.id === action.payload
       );
-      if (existingItem) {
-        existingItem.quantity += 1;
+      if (itemToIncrease) {
+        itemToIncrease.quantity += 1;
       }
     },
-    decreaseItemQuantity: (state, action) => {
-      const existingItem = state.cartItems.find(
+    decreaseItemQuantity(state, action) {
+      const itemToDecrease = state.cartItems.find(
         (item) => item.id === action.payload
       );
-      if (existingItem && existingItem.quantity > 1) {
-        existingItem.quantity -= 1;
+      if (itemToDecrease && itemToDecrease.quantity > 1) {
+        itemToDecrease.quantity -= 1;
       }
     },
   },
 });
-
-const InitialState = {
-  cartItems: [],
-};
-
 export const {
-  addToCart,
-  removeFromCart,
+  addItemToCart,
+  removeItemFromCart,
   clearCart,
   increaseItemQuantity,
   decreaseItemQuantity,
